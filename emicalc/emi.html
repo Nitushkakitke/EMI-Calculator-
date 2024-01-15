@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <style>
+        #heading {
+            font-size: 35px;
+            background-image: linear-gradient(to left, #ffffff, #2082dd);
+            text-align: center;
+            font-family: 'Times New Roman', Times, serif;
+            margin-left: 0;
+            width: 100%;
+            text-align: left;
+            margin-bottom: 20px;
+            height: 80px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            padding-left: 20px;
+            line-height: 1.5;
+            color: #fcfcfc;
+        }
+        img {
+            /* align-items: right; */
+            margin-left: 95%;
+             margin-top: -400px; 
+            position: relative;
+            margin-bottom: 35px;
+            /* padding-left: 90%; */
+            transition: width 1s, height 1s;
+        }
+        img:hover {
+            /* height: 55px;
+            width: 55px; */
+            /* opacity: 0.5; */
+            /* transition: 1s ease; */
+
+            -webkit-transform: scale(1.13);
+-ms-transform: scale(1.13);
+transform: scale(1.13);
+transition: 1s ease;
+/* background-color: #77c2ff; */
+
+        }
+        input[type=text] {
+            height: 30px;
+            font-size: 18px;
+            border-radius: 5px;
+            width: 200px;
+            margin-bottom: 12px;
+            
+        }
+
+        input[type=month] {
+            height: 30px;
+            font-size: 18px;
+            border-radius: 5px;
+            width: 200px;
+        }
+
+        #container {
+
+            width: 90%;
+            margin: auto;
+            height: 620px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            opacity: 0.8;
+            overflow: hidden;
+        }
+
+        #info {
+            width: 43%;
+            height: 540px;
+            float: left;
+            margin-left: 50px;
+            margin-top: 25px;
+            padding-left: 20px;
+            padding-right: 20px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, .7);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(50px);
+        }
+
+        #result {
+            width: 43%;
+
+            height: 540px;
+            float: right;
+            margin-right: 50px;
+            /* margin-top: 25px; */
+            padding-left: 10px;
+            padding-right: 10px;
+            background: rgba(255, 255, 255, .7);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(5px);
+            border-radius: 20px;
+        }
+
+        label {
+            font-size: 20px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .slidecontainer {
+            position: relative;
+        }
+
+        .range-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 90%;
+            height: 8px;
+            outline: none;
+            background-color: #ff9100;
+            border-radius: 5px;
+        }
+
+        .range-slider::-webkit-slider-thumb {
+            -webkit-apperance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: rgb(255, 145, 0);
+            border-radius: 50%;
+        }
+
+        .range-slider::-webkit-slider-thumb:hover {
+            box-shadow: 0 0 0 5px rgb(255, 196, 69);
+        }
+
+        .range-slider::-webkit-slider-thumb:active {
+            box-shadow: 0 0 0 5px rgb(255, 145, 0);
+        }
+
+        #output_div {
+            width: 90%;
+            background-color: #eeeeee;
+            margin: auto;
+            font-size: 18px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            padding-bottom: 50px;
+            background-color: (0, 153, 255);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .radio-buttons {
+            width: 70%;
+            font-size: 3px;
+            margin-left: 15%;
+            margin-top: 8px;
+            padding-bottom: 10px;
+        }
+
+        .radio {
+            font-size: 20px;
+        }
+
+        .choice {
+            width: 90%;
+            text-align: center;
+            font-size: 25px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            /* background-color: #5bb0ff; */
+            background-color: #2093ff;
+            margin-bottom: 15px;
+            margin-top: 15px;
+            border-radius: 30px;
+            color: #fcfcfc;
+        }
+
+        .kbd {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        #table {
+            width: 90%;
+            margin-left: 5%;
+            overflow: hidden;
+            position: relative;
+             margin-top: 40px; 
+        }
+
+        .mychart {
+            /* margin-top: 40px; */
+            height: 20px;
+        } 
+    </style>
+
+    <title>EMI Calculator</title>
+</head>
+
+<body>
+
+
+
+    <div id="heading">
+        <!-- <h1>EMI Calculator for Home Loan</h1> -->
+        <span>EMI Calculator for Home Loan</span>
+        <a href="eligibility.html" target="_blank" title="Eligibility calculator for home loan"><img src="afford.png" height="50px" width="50px"></a>
+    </div>
+    <div id="container">
+
+        <div id="info">
+            <form id="loan-form">
+                <br>
+                <div class="slidecontainer">
+                    <label for="slider1">EMI Amount: &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                    <input type="text" name="input_amount" id="input_amount" value="50,00,000">
+                    <input type="range" name="range_amount" id="range_amount" min="100000" max="20000000"
+                        value="5000000" step="100000" class="range-slider" onchange="emi()">
+                </div> <br>
+
+                <div class="slidecontainer">
+                    <label for="slider2">Interest Rate: &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                    <input type="text" name="input_interest" id="input_interest" value="7.5">
+                    <input type="range" name="range_interest" id="range_interest" min="1" max="30" value="7.5"
+                        step="0.25" class="range-slider" onchange="emi()">
+
+
+                </div> <br>
+
+                <div class="slidecontainer">
+                    <label for="slider3">Loan Tenure (Years): &nbsp;&nbsp;&nbsp;&nbsp;</label>
+                    <input type="text" name="input_years" id="input_years" value="20">
+                    <input type="range" name="range_years" id="range_years" min="1" max="40" value="20"
+                        class="range-slider" step="1" onchange="emi()">
+
+
+                </div> <br>
+
+                <div class="slidecontainer">
+                    <label for="slider4">Prepayment (Optional): </label>
+                    <input type="text" name="input_prepayment" id="input_prepayment" value="0">
+                    <input type="range" name="range_prepayment" id="range_prepayment" min="0" max="100000" step="50"
+                        class="range-slider" value="0" onchange="emi()">
+
+                </div><br>
+
+                <label for="start_date">Loan Start Month: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input type="month" id="date" name="date" min="2022-03" value="2022-08" onchange="emi()">
+                <br><br>
+
+                <div class="choice">
+                    <label for="option">Choose Table Format</label><br>
+                    <div class="radio-buttons">
+                        <input type="radio" name="option" id="monthly" value="monthly" onclick="emi()"
+                            checked></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label class="radio" for="monthly"> Month wise
+                        </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="radio" name="option" id="yearly" onclick="emi()"
+                            value="yearly">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label for="yearly" class="radio"> Year wise </label>
+                    </div>
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+
+
+
+        <div id="result">
+            <br>
+            <div class="columns is-multiline">
+
+                <div class="column is-half">
+                    <div class="notification is-primary has-text">
+                        <p id="monthlyPayment" class="title is-5">₹ </p>
+                        <p class="subtitle is-6">EMI + Prepayment</p>
+                    </div>
+                </div>
+
+                <div class="column is-half">
+                    <div class="notification is-info has-text">
+                        <p id="totalInterest" class="title is-5">₹</p>
+                        <p class="subtitle is-6">Total Interest</p>
+                    </div>
+                </div>
+
+                <div class="column is-half">
+                    <div class="notification is-link has-text">
+                        <p id="totalPayment" class="title is-5">₹ </p>
+                        <p class="subtitle is-6">Total Amount</p>
+                    </div>
+                </div>
+
+                <div class="column is-half">
+                    <div class="notification is-link has-text">
+                        <p id="pre" class="title is-5">₹ </p>
+                        <p class="subtitle is-6">Amount saved</p>
+                    </div>
+                </div>
+
+                <div style="color:#ffffff;width:60%;height: 40px; margin-left: 20%;line-height: 2;margin-top: 5%;font-size:18px;text-align:center;border-radius:10px;background-color: #2093ff;">
+                    Estimated end Date : &nbsp;&nbsp;<span id="estimate">2048-08</span>
+                    
+                </div>
+
+
+                <br><br><br><br>
+
+                <div class="mychart" style="height: 290px; width: 100%;">
+
+                    <div id="chartContainer" style="height: 290px; width: 100%;"></div>
+                </div>
+
+            </div>
+
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <div id="table">
+        <table border="2px">
+            <tr>
+                <th width="180px" class="strt" style="background-color:#9400D3; text-align:center;">START DATE</th>
+                <th width="180px" class="principal" style="background-color:#4B0082; text-align:center; color: white;">AMOUNT</th>
+                <TH width="180px" class="emi" style="background-color:#0000FF; text-align:center;">EMI</TH>
+                <TH width="180px" class="interest" style="background-color:#00FF00; text-align:center;">INTEREST</TH>
+                <TH width="180px" class="principal" style="background-color:#FFFF00; text-align:center;">PRINCIPAL</TH>
+                <TH width="180px" class="prepay" style="background-color:#FF7F00; text-align:center;">PREPAYMENT</TH>
+                <TH width="180px" class="emiplus" style="background-color:#FF0000; text-align:center;">EMI + PREPAYMENT</TH>
+                <TH width="180px" class="balance" style="background-color:#ff912a; text-align:center;">BALANCE</TH>
+            </tr>
+        </table>
+    </div>
+    <div id="output_div"></div>
+
+
+
+
+
+    <script>
+        var amount = document.querySelector('#range_amount');
+        var input_amount = document.querySelector('#input_amount');
+
+        var interest = document.querySelector('#range_interest');
+        var input_interest = document.querySelector('#input_interest');
+
+        var years = document.querySelector('#range_years');
+        var input_years = document.querySelector('#input_years');
+
+        var prepayment = document.querySelector('#range_prepayment');
+        var input_prepayment = document.querySelector('#input_prepayment');
+
+
+        amount.style.background = 'linear-gradient(90deg, #2082dd ' + ((5000000 * 100) / 20000000) + '%,rgb(191, 191, 202) 0%)'
+        interest.style.background = 'linear-gradient(90deg, #2082dd ' + ((7 * 100) / 30) + '%,rgb(191, 191, 202) 0%)'
+        years.style.background = 'linear-gradient(90deg, #2082dd ' + ((20 * 100) / 40) + '%,rgb(191, 191, 202) 0%)'
+        prepayment.style.background = 'linear-gradient(90deg, #2082dd ' + ((0 * 100) / 10000) + '%,rgb(191, 191, 202) 0%)'
+
+        // -----------------------------------------------amount-------------------------------------------------------
+
+        amount.oninput = function () {
+            this.previousElementSibling.value = parseInt(this.value).toLocaleString('en-IN');
+            amount.style.background = 'linear-gradient(90deg, #2082dd ' + ((amount.value * 100) / 20000000) + '%,rgb(191, 191, 202) 0%)'
+        }
+        // -------------------------------------------------interest----------------------------------------------------------------
+
+        interest.oninput = function () {
+            this.previousElementSibling.value = this.value;
+            interest.style.background = 'linear-gradient(90deg, #2082dd ' + (((interest.value - 0.5) * 100) / 30) + '%,rgb(191, 191, 202) 0%)'
+        }
+        // ------------------------------------------------years--------------------------------------------------------------
+
+        years.oninput = function () {
+            this.previousElementSibling.value = this.value;
+            years.style.background = 'linear-gradient(90deg, #2082dd ' + ((years.value * 100) / 40) + '%,rgb(191, 191, 202) 0%)'
+        }
+        // -------------------------------------------------prepayment------------------------------------------------------------
+
+        prepayment.oninput = function () {
+            this.previousElementSibling.value = this.value;
+            prepayment.style.background = 'linear-gradient(90deg, #2082dd ' + ((prepayment.value * 100) / 100000) + '%,rgb(191, 191, 202) 0%)'
+        }
+        // --------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+        var slider2 = document.getElementById("input_interest");
+        var slider3 = document.getElementById("input_years");
+        var slider1 = document.getElementById("input_amount").value;
+        slider1 = slider1.split(',').join('');
+        const UIamount = slider1;
+        const UIinterest = slider2.value;
+        const UIyears = slider3.value;
+        const principal = parseFloat(UIamount);
+        const CalculateInterest = parseFloat(UIinterest) / 100 / 12;
+        const calculatedPayments = parseFloat(UIyears) * 12;
+
+        //Compute monthly Payment
+
+        const x = Math.pow(1 + CalculateInterest, calculatedPayments);
+        const monthly = (principal * x * CalculateInterest) / (x - 1);
+        const monthlyPayment = Math.round(monthly);
+
+        //Compute Interest
+
+        const totalInterest = Math.round(monthly * calculatedPayments - principal);
+
+        //Compute Total Payment
+
+        const totalPayment = Math.round(monthly * calculatedPayments);
+
+        //Show results
+
+
+
+        document.getElementById("monthlyPayment").innerHTML = "₹" + monthlyPayment.toLocaleString('en-IN');
+
+        document.getElementById("totalInterest").innerHTML = "₹ " + totalInterest.toLocaleString('en-IN');
+
+        document.getElementById("totalPayment").innerHTML = "₹ " + totalPayment.toLocaleString('en-IN');
+
+        CanvasJS.addColorSet("chartcolor",
+                [//colorSet Array
+
+                "#2093ff",
+                "#ff9100"            
+                ]);
+
+        var chart = new CanvasJS.Chart("chartContainer", {
+            animationEnabled: true,
+            colorSet: "chartcolor",
+            title: {
+                text: "Breakup of total payment"
+            },
+            data: [{
+                type: "pie",
+                startAngle: 240,
+                yValueFormatString: "##00.0\" ₹\"",
+                indexLabel: "{label} {y}",
+                dataPoints: [
+                    { y: totalInterest, label: "TOTAL INTEREST" },
+                    { y: 5000000, label: "PRINCIPAL" }
+
+                ]
+            }]
+        });
+        chart.render();
+
+
+
+
+
+
+        function emi() {
+            var total_amount = document.getElementById("input_amount").value;
+            total_amount = total_amount.split(',').join('');
+            var years = document.getElementById("input_years").value;
+            var interest = document.getElementById("input_interest").value;
+            var selectedvalue = document.querySelector('input[name="option"]:checked').value;
+            var no = 1;
+          //  var monthsi = ['jan', 'feb', 'mar', 'apr', 'may', 'june', "july", "aug", "sep", "oct", "nov", "dec"];
+            var pre_amount = document.getElementById("input_prepayment").value;
+            var start_date = document.getElementById("date").value;
+            var actual_amount = (total_amount);
+            var rateofinterest = (interest) / 100 / 12;
+            var months = (years) * 12;
+            var totalam = 0;
+            var amount_saved = 0;
+            var x1 = Math.pow(1 + rateofinterest, months);
+            var monthly = (actual_amount * x1 * rateofinterest) / (x1 - 1);
+            var emi = Math.round(monthly);
+            var totalInterest = Math.round(monthly * months - actual_amount);
+            var totalPayment = Math.round(monthly * months);
+            var outstanding_interest;
+            var principal_repayment;
+            var remaining_amount;
+            var total_amount2 = 0;
+            var no = 0;
+            if (selectedvalue == "monthly") {
+                var outputHTML = "";
+                outputHTML += "<table border=2px solid red, width=100%>";
+                var start_date = document.getElementById("date").value;
+                var end_date;
+                for (var i = 0; i < months; i++) {
+                    outstanding_interest = Math.round(actual_amount * rateofinterest);
+                    principal_repayment = Math.round(emi - outstanding_interest);
+                    var emiplusprepayment = parseInt(emi) + parseInt(pre_amount)
+                    remaining_amount = Math.round((actual_amount - principal_repayment) - pre_amount);
+                    if (remaining_amount < 0 || actual_amount <= emi) {
+                        remaining_amount = 0;
+                    }
+                    totalam += outstanding_interest;
+                    total_amount2 += principal_repayment;
+                    outputHTML += "<tr>";
+                    outputHTML += "<td width=180px>" + start_date + "</td>";
+                    var res = start_date.split("-");
+                    var year = parseInt(res[0]);
+                    var month = parseInt(res[1]) + 1;
+                    if (month <= 9 && month > 0) {
+                        month = "0" + month;
+                    }
+                    else if (month == 13) {
+                        month = "0" + 1;
+                        year = year + 1;
+                    }
+                    var newdate = year + "-" + month;
+                    start_date = newdate;
+
+                    outputHTML += "<td width=180px>" + actual_amount + "</td>";
+                    outputHTML += "<td width=180px>" + emi + "</td>";
+                    outputHTML += "<td width=180px>" + Math.round(outstanding_interest) + "</td>";
+                    outputHTML += "<td width=180px>" + Math.round(principal_repayment) + "</td>";
+                    outputHTML += "<td width=180px>" + pre_amount + "</td>";
+                    outputHTML += "<td width=180px>" + emiplusprepayment + "</td>";
+                    outputHTML += "<td width=180px>" + Math.round(remaining_amount) + "</td>";
+
+                    actual_amount = remaining_amount;
+                    end_date = start_date;
+
+                    no++;
+                    if (remaining_amount == 0) {
+                        break;
+                    }
+                    if (actual_amount <= principal_repayment) {
+                        remaining_amount = 0;
+
+                    }
+                    outputHTML += "</tr>";
+                }
+
+
+                outputHTML += "</table>";
+                if (pre_amount > 0) {
+                    amount_saved = totalInterest - totalam;
+                    document.getElementById("pre").innerHTML = "₹ " + amount_saved.toLocaleString('en-IN');
+                    document.getElementById("monthlyPayment").innerHTML = "₹" + emi.toLocaleString('en-IN') + " + " + "₹" + pre_amount.toLocaleString('en-IN');
+                    document.getElementById("totalInterest").innerHTML = "₹ " + totalam.toLocaleString('en-IN');
+                    document.getElementById("totalPayment").innerHTML = "₹ " + (totalPayment - amount_saved).toLocaleString('en-IN');
+
+                    CanvasJS.addColorSet("chartcolor",
+                [//colorSet Array
+
+                "#2093ff",
+                "#ff9100"            
+                ]);
+                    var chart = new CanvasJS.Chart("chartContainer", {
+                        animationEnabled: true,
+                        colorSet: "chartcolor",
+                        title: {
+                            text: "Breakup of total payment"
+                        },
+                        data: [{
+                            type: "pie",
+                            startAngle: 240,
+                            yValueFormatString: "##00.0\" ₹\"",
+                            indexLabel: "{label} {y}",
+                            dataPoints: [
+                                { y: totalam, label: "TOTAL INTEREST" },
+                                { y: total_amount, label: "PRINCIPAL" }
+
+                            ]
+                        }]
+                    });
+                    chart.render();
+
+                }
+                else {
+                    document.getElementById("monthlyPayment").innerHTML = "₹" + emi.toLocaleString('en-IN');
+                    document.getElementById("totalInterest").innerHTML = "₹ " + totalInterest.toLocaleString('en-IN');
+                    document.getElementById("totalPayment").innerHTML = "₹ " + totalPayment.toLocaleString('en-IN');
+                    document.getElementById("pre").innerHTML = "₹ " + 0;
+
+                    CanvasJS.addColorSet("chartcolor",
+                [//colorSet Array
+
+                "#2093ff",
+                "#ff9100"            
+                ]);
+                    var chart = new CanvasJS.Chart("chartContainer", {
+                        animationEnabled: true,
+                        colorSet: "chartcolor",
+                        title: {
+                            text: "Breakup of total payment"
+                        },
+                        data: [{
+                            type: "pie",
+                            startAngle: 240,
+                            yValueFormatString: "##00.0\" ₹\"",
+                            indexLabel: "{label} {y}",
+                            dataPoints: [
+                                { y: totalInterest, label: "TOTAL INTEREST" },
+                                { y: total_amount, label: "PRINCIPAL" }
+
+                            ]
+                        }]
+                    });
+                    chart.render();
+
+                }
+
+                document.getElementById('estimate').innerHTML = end_date;
+
+            }
+
+
+
+            else {
+
+                var start_date = document.getElementById("date").value;
+                var actual_amount = (total_amount);
+                var rateofinterest = (interest) / 100 / 12;
+                var months = (years) * 12;
+                var totalam = 0;
+                var amount_saved = 0;
+                var x1 = Math.pow(1 + rateofinterest, months);
+                var monthly = (actual_amount * x1 * rateofinterest) / (x1 - 1);
+                var emi = Math.round(monthly);
+                var totalInterest = Math.round(monthly * months - actual_amount);
+                var totalPayment = Math.round(monthly * months);
+                var outputHTML = "";
+
+
+
+
+                outputHTML += "<table border=2px solid red, width=100%>";
+
+                for (var i = 0; i < (years + 1); i++) {
+                    var end_date;
+                    var outstanding_interest = Math.round(actual_amount * rateofinterest);
+                    var out_interest = outstanding_interest * 12;
+                    em = emi * 12;
+                    var principal_repayment = Math.round(em - out_interest);
+                    var emipluspre = parseInt(em) + parseInt(pre_amount);
+                    var remaining_amount = Math.round((actual_amount - principal_repayment) - pre_amount);
+                    var res = start_date.split("-");
+                    var year = parseInt(res[0]);
+                    var month = parseInt(res[1]) + 12;
+                    if (month <= 9 && month > 0) {
+                        month = "0" + month;
+                    }
+                    else if (month >= 13) {
+                        month = "0" + 1;
+                        year = year + 1;
+                    }
+                    var newdate = year + "-" + month;
+
+
+
+                    if (remaining_amount < 0 || actual_amount <= emi) {
+                        remaining_amount = 0;
+                    }
+                    totalam += outstanding_interest;
+
+                    outputHTML += "<tr>";
+                    outputHTML += "<td width=180px>" + start_date + "</td>";
+
+                    outputHTML += "<td width=180px>" + actual_amount + "</td>";
+                    outputHTML += "<td width=180px>" + em + "</td>";
+                    outputHTML += "<td width=180px>" + Math.round(out_interest) + "</td>";
+                    outputHTML += "<td width=180px>" + Math.round(principal_repayment) + "</td>";
+
+                    outputHTML += "<td width=180px>" + Math.round(pre_amount) + "</td>";
+                    outputHTML += "<td width=180px>" + Math.round(emipluspre) + "</td>";
+
+                    outputHTML += "<td width=180px>" + Math.round(remaining_amount) + "</td>";
+                    actual_amount = remaining_amount;
+                    year = parseInt(year + 1);
+
+                    start_date = newdate;
+                    end_date = start_date;
+                    no++;
+                    if (remaining_amount == 0) {
+                        break;
+                    }
+                    if (actual_amount <= principal_repayment) {
+                        remaining_amount = 0;
+
+                    }
+
+                }
+                outputHTML += "</tr>";
+                if (pre_amount > 0) {
+                    amount_saved = totalInterest - totalam;
+                    document.getElementById("pre").innerHTML = "₹ " + amount_saved.toLocaleString('en-IN');
+                    document.getElementById("monthlyPayment").innerHTML = "₹" + emi.toLocaleString('en-IN') + " + " + "₹" + pre_amount.toLocaleString('en-IN');
+                    document.getElementById("totalInterest").innerHTML = "₹ " + totalam.toLocaleString('en-IN');
+                    document.getElementById("totalPayment").innerHTML = "₹ " + (totalPayment - amount_saved).toLocaleString('en-IN');
+
+                    CanvasJS.addColorSet("chartcolor",
+                [//colorSet Array
+
+                "#2093ff",
+                "#ff9100"            
+                ]);
+                    var chart = new CanvasJS.Chart("chartContainer", {
+                        animationEnabled: true,
+                        colorSet: "chartcolor",
+                        title: {
+                            text: "Breakup of total payment"
+                        },
+                        data: [{
+                            type: "pie",
+                            startAngle: 240,
+                            yValueFormatString: "##00.0\" ₹\"",
+                            indexLabel: "{label} {y}",
+                            dataPoints: [
+                                { y: totalam, label: "TOTAL INTEREST" },
+                                { y: total_amount, label: "PRINCIPAL" }
+
+                            ]
+                        }]
+                    });
+                    chart.render();
+                }
+                else {
+                    document.getElementById("monthlyPayment").innerHTML = "₹" + emi.toLocaleString('en-IN');
+                    document.getElementById("totalInterest").innerHTML = "₹ " + totalInterest.toLocaleString('en-IN');
+                    document.getElementById("totalPayment").innerHTML = "₹ " + totalPayment.toLocaleString('en-IN');
+                    document.getElementById("pre").innerHTML = "₹ " + 0;
+
+                    CanvasJS.addColorSet("chartcolor",
+                [//colorSet Array
+
+                "#2093ff",
+                "#ff9100"            
+                ]);
+                    var chart = new CanvasJS.Chart("chartContainer", {
+                        animationEnabled: true,
+                        colorSet: "chartcolor",
+                        title: {
+                            text: "Breakup of total payment"
+                        },
+                        data: [{
+                            type: "pie",
+                            startAngle: 240,
+                            yValueFormatString: "##00.0\" ₹\"",
+                            indexLabel: "{label} {y}",
+                            dataPoints: [
+                                { y: totalInterest, label: "TOTAL INTEREST" },
+                                { y: total_amount, label: "PRINCIPAL" }
+
+                            ]
+                        }]
+                    });
+                    chart.render();
+                    document.getElementById('estimate').innerHTML = end_date;
+
+                }
+
+                outputHTML += "</table>";
+
+
+            }
+
+
+            document.getElementById("output_div").innerHTML = outputHTML;
+
+        }
+    </script>
+</body>
+
+</html>
